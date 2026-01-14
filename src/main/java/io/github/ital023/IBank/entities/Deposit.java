@@ -28,5 +28,43 @@ public class Deposit {
     @Column(name = "ip_address")
     private String ipAddress;
 
+    public UUID getDepositId() {
+        return depositId;
+    }
 
+    public void setDepositId(UUID depositId) {
+        this.depositId = depositId;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public BigDecimal getDepositValue() {
+        return depositValue;
+    }
+
+    public void setDepositValue(BigDecimal depositValue) {
+        this.depositValue = depositValue;
+    }
+
+    public LocalDateTime getDepositDateTime() {
+        return depositDateTime;
+    }
+
+    public void setDepositDateTime(LocalDateTime depositDateTime) {
+        this.depositDateTime = depositDateTime;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
 }
