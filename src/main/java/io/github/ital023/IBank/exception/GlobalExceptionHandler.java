@@ -1,0 +1,16 @@
+package io.github.ital023.IBank.exception;
+
+import org.springframework.http.ProblemDetail;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(IBankException.class)
+    public ProblemDetail handleIBankException(IBankException e) {
+        return e.toProblemDetail();
+    }
+
+
+}
