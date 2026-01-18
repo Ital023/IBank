@@ -1,7 +1,9 @@
 package io.github.ital023.IBank.controller;
 
 import io.github.ital023.IBank.controller.dto.CreateWalletDto;
+import io.github.ital023.IBank.controller.dto.DepositMoneyDto;
 import io.github.ital023.IBank.service.WalletService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,16 @@ public class WalletController {
         var deleted = walletService.deleteWallet(walletId);
 
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{walletId}/deposits")
+    public ResponseEntity<Void> depositMoney(@PathVariable("walletId")UUID walletdId,
+                                             @RequestBody @Valid DepositMoneyDto dto,
+                                             HttpServletRequest servletRequest) {
+
+        walletService.depositMoney(walletdId, dto, servletRequest.getAttribute("x-user-ip").toString());
+
+        return ResponseEntity.ok().build();
     }
 
 }
