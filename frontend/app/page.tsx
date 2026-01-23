@@ -24,18 +24,21 @@ export default function HomePage() {
   const router = useRouter();
 
   const emailWalletSchema = z.object({
-    email: z.email(),
+    email: z.email("Email Inválido!"),
   });
 
   type EmailWalletSchema = z.infer<typeof emailWalletSchema>;
 
-  const {register, handleSubmit, formState:{errors}} = useForm<EmailWalletSchema>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EmailWalletSchema>({
     resolver: zodResolver(emailWalletSchema),
   });
 
-  function getWallet({email}: EmailWalletSchema) {
-    console.log(email);
-    
+  function getWallet({ email }: EmailWalletSchema) {
+    findWalletByEmail(email);
   }
 
   return (
@@ -92,7 +95,7 @@ export default function HomePage() {
               <CardContent>
                 <form onSubmit={handleSubmit(getWallet)} className="space-y-4">
                   <div className="space-y-2">
-                    <Input 
+                    <Input
                       {...register("email")}
                       type="email"
                       placeholder="Digite seu e-mail"
@@ -105,6 +108,11 @@ export default function HomePage() {
                   >
                     Acessar Conta
                   </Button>
+                  {errors.email && (
+                    <p className="text-center text-md text-red-600">
+                      *{errors.email?.message}*
+                    </p>
+                  )}
                 </form>
 
                 <div className="mt-6 pt-6 border-t border-border/50">
