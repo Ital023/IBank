@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -148,6 +149,19 @@ public class WalletService {
                 view.getStatementValue(),
                 view.getStatementDateTime(),
                 StatementOperation.CREDIT
+        );
+    }
+
+    public WalletDto findById(String email) {
+        Wallet wallet = walletRepository.findByEmail(email)
+                .orElseThrow(()-> new WalletNotFoundException("There's no wallet with this id"));
+
+        return new WalletDto(
+                wallet.getWalletId(),
+                wallet.getCpf(),
+                wallet.getName(),
+                wallet.getEmail(),
+                wallet.getBalance()
         );
     }
 

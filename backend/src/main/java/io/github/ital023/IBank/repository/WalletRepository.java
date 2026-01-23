@@ -48,4 +48,7 @@ public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 
     @Query(value = SQL_STATEMENT, countQuery = SQL_COUNT_STATEMENT, nativeQuery = true)
     Page<StatementView> findStatements(String walletId, PageRequest pageRequest);
+
+    Optional<Wallet> findByEmail(String email);
+
 }

@@ -3,6 +3,7 @@ package io.github.ital023.IBank.controller;
 import io.github.ital023.IBank.controller.dto.CreateWalletDto;
 import io.github.ital023.IBank.controller.dto.DepositMoneyDto;
 import io.github.ital023.IBank.controller.dto.StatementDto;
+import io.github.ital023.IBank.controller.dto.WalletDto;
 import io.github.ital023.IBank.service.WalletService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -53,6 +54,12 @@ public class WalletController {
         var statement = walletService.getStatements(walletId, page, pageSize);
 
         return ResponseEntity.ok(statement);
+    }
+
+    @GetMapping("/{walletEmail}")
+    public ResponseEntity<WalletDto> findById(@PathVariable("walletEmail") String email) {
+        WalletDto wallet = walletService.findById(email);
+        return ResponseEntity.ok(wallet);
     }
 
 }
