@@ -152,8 +152,8 @@ public class WalletService {
         );
     }
 
-    public WalletDto findById(String email) {
-        Wallet wallet = walletRepository.findByEmail(email)
+    public WalletDto findById(FindByIdWalletDto dto) {
+        Wallet wallet = walletRepository.findByEmail(dto.email())
                 .orElseThrow(()-> new WalletNotFoundException("There's no wallet with this id"));
 
         return new WalletDto(
