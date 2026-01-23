@@ -1,49 +1,125 @@
 "use client";
 
+import React from "react";
+
 import { useState } from "react";
-import { BalanceCard } from "./components/BalanceCard";
-import { Wallet } from "@/schema/wallet.schema";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Landmark, ArrowRight, Shield, Zap, CreditCard } from "lucide-react";
+import Image from "next/image";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { findWalletByEmail } from "@/functions/get-wallet";
 
-export default function Home() {
-  const [wallet, setWallet] = useState<Wallet | null>(null);
+export default function HomePage() {
+  const router = useRouter();
 
   const emailWalletSchema = z.object({
-    email: z.email("Email not found"),
+    email: z.email(),
   });
 
   type EmailWalletSchema = z.infer<typeof emailWalletSchema>;
 
-  const {register, handleSubmit, formState: {errors}} = useForm<EmailWalletSchema>({
+  const {register, handleSubmit, formState:{errors}} = useForm<EmailWalletSchema>({
     resolver: zodResolver(emailWalletSchema),
   });
 
   function getWallet({email}: EmailWalletSchema) {
-    findWalletByEmail(email);
+    console.log(email);
+    
   }
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
-      <div className="max-w-md mx-auto space-y-8">
-        <div className="text-center mb-8">
-          <form onSubmit={handleSubmit(getWallet)} className="flex flex-row gap-3">
-            <Input {...register("email")}/>
-            <p>{errors.email?.message}</p>
-            <Button>Buscar</Button>
-          </form>
+    <main className="min-h-screen flex flex-col">
+      <section className="flex-1 flex items-center justify-center px-4 py-12 md:py-20">
+        <div className="w-full max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8">
+            <div className="relative w-[240px] h-[80px]">
+              <Image
+                src="/logo.png"
+                alt="logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
+                Banco sem
+                <br />
+                <span className="text-primary">complicação.</span>
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
+                Acesse sua carteira digital instantaneamente. Deposite,
+                transfira e gerencie seu dinheiro de qualquer lugar, a qualquer
+                momento.
+              </p>
+            </div>
 
-          <h1 className="text-3xl font-bold text-foreground">🏧 IBank</h1>
-          <p className="text-muted-foreground mt-1">
-            Banco digital feito por Italo Miranda
-          </p>
+            <div className="flex flex-wrap gap-6">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Shield className="w-4 h-4 text-primary" />
+                <span className="text-sm">Transações seguras</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Zap className="w-4 h-4 text-primary" />
+                <span className="text-sm">Transferências instantâneas</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <CreditCard className="w-4 h-4 text-primary" />
+                <span className="text-sm">Depósitos fáceis</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-center lg:justify-end">
+            <Card className="w-full max-w-md border-border/50 bg-card/80 backdrop-blur-sm">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl">Bem-vindo de volta</CardTitle>
+                <CardDescription>
+                  Digite seu e-mail para acessar sua carteira
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit(getWallet)} className="space-y-4">
+                  <div className="space-y-2">
+                    <Input 
+                      {...register("email")}
+                      type="email"
+                      placeholder="Digite seu e-mail"
+                      className="h-12 bg-input/50 border-border/50 placeholder:text-muted-foreground/50"
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    className="w-full h-12 text-base font-medium"
+                  >
+                    Acessar Conta
+                  </Button>
+                </form>
+
+                <div className="mt-6 pt-6 border-t border-border/50">
+                  <p className="text-sm text-muted-foreground text-center">
+                    {"Não tem uma carteira? "}
+                    <button className="text-primary hover:underline font-medium">
+                      Crie uma
+                    </button>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-        <BalanceCard wallet={wallet} />
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
