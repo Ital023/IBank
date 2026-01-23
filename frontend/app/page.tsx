@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BalanceCard } from "./components/BalanceCard";
 import { Wallet } from "@/schema/wallet.schema";
 import z from "zod";
@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { findWalletByEmail } from "@/functions/get-wallet";
 
 export default function Home() {
   const [wallet, setWallet] = useState<Wallet | null>(null);
@@ -23,7 +24,7 @@ export default function Home() {
   });
 
   function getWallet({email}: EmailWalletSchema) {
-    console.log(email);
+    findWalletByEmail(email);
   }
 
   return (
