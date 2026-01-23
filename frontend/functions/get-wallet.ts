@@ -7,5 +7,6 @@ import axios from "axios"
 
 export async function findWalletByEmail(email: string) {
   const response = await api.get("/wallets", {params: { email }});
+  console.log(response);
   
 }

@@ -19,6 +19,7 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { findWalletByEmail } from "@/functions/get-wallet";
+import { InputBlock } from "@/components/shared/input-block";
 
 export default function HomePage() {
   const router = useRouter();
@@ -95,11 +96,12 @@ export default function HomePage() {
               <CardContent>
                 <form onSubmit={handleSubmit(getWallet)} className="space-y-4">
                   <div className="space-y-2">
-                    <Input
-                      {...register("email")}
-                      type="email"
+                    <InputBlock
+                      register={register}
+                      name="email"
                       placeholder="Digite seu e-mail"
                       className="h-12 bg-input/50 border-border/50 placeholder:text-muted-foreground/50"
+                      errorMessage={errors.email?.message}
                     />
                   </div>
                   <Button
@@ -108,11 +110,6 @@ export default function HomePage() {
                   >
                     Acessar Conta
                   </Button>
-                  {errors.email && (
-                    <p className="text-center text-md text-red-600">
-                      *{errors.email?.message}*
-                    </p>
-                  )}
                 </form>
 
                 <div className="mt-6 pt-6 border-t border-border/50">
