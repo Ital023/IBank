@@ -49,7 +49,6 @@ export default function HomePage() {
       await findWalletByEmail(email);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error);
         toast.warning(
           error.response?.data?.title ?? "Carteira não encontrada",
         );
@@ -66,7 +65,7 @@ export default function HomePage() {
       <section className="flex-1 flex items-center justify-center px-4 py-12 md:py-20">
         <div className="w-full max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <div className="relative w-[240px] h-[80px]">
+            <div className="relative w-60 h-20">
               <Image
                 src="/logo.png"
                 alt="logo"
@@ -124,7 +123,6 @@ export default function HomePage() {
                     />
                   </div>
                   <StateButton
-                    type="submit"
                     className="w-full h-12 text-base font-medium"
                     isLoading={isLoading}
                   >
