@@ -20,6 +20,7 @@ import { StateButton } from "@/components/shared/state-button";
 import { toast } from "sonner";
 import axios from "axios";
 import { useWallet } from "@/hooks/use-wallet";
+import Link from "next/link";
 
 export default function HomePage() {
   const { wallet, setWallet } = useWallet();
@@ -144,9 +145,12 @@ export default function HomePage() {
                 <div className="mt-6 pt-6 border-t border-border/50">
                   <p className="text-sm text-muted-foreground text-center">
                     {"Não tem uma carteira? "}
-                    <button className="text-primary hover:underline font-medium">
+                    <Link
+                      href="/create-wallet"
+                      className="text-primary hover:underline font-medium"
+                    >
                       Crie uma
-                    </button>
+                    </Link>
                   </p>
                 </div>
               </CardContent>

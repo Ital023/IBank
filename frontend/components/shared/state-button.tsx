@@ -14,7 +14,7 @@ export function StateButton({ className, children, isLoading }: StateButton) {
     <Button size={"lg"} className={cn("w-full", className)} >
       {isLoading ? (
         <>
-          <Spinner /> Entrando
+          <Spinner /> Carregando
         </>
       ) : (
         <>{children}</>
