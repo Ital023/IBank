@@ -14,13 +14,9 @@ import {
   Wallet,
   TrendingUp,
   TrendingDown,
-  Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWallet } from "@/hooks/use-wallet";
-import { DashboardLayout } from "@/components/shared/dashboard-layout";
-import { WalletResponse } from "@/schema/wallet-response.schema";
-import { Button } from "@/components/ui/button";
 import { getWalletWithStatements } from "@/service/wallet-service";
 import {
   Statement,
@@ -28,10 +24,14 @@ import {
   StatementSchema,
 } from "@/schema/statement.schema";
 import z from "zod";
+import { useCurrency } from "@/hooks/use-currency";
+import { useDate } from "@/hooks/use-date";
 
 export default function DashboardPage() {
-  const { wallet, setWallet } = useWallet();
-  const [walletStatements, setWalletStatements] = useState<WalletResponse>();
+  const { formatCurrency } = useCurrency();
+  const { formatDateTime } = useDate();
+
+  const { wallet } = useWallet();
   const [statements, setStatements] = useState<Statement[]>([]);
 
   useEffect(() => {
@@ -46,36 +46,6 @@ export default function DashboardPage() {
     };
     fetchWalletStatements();
   }, [wallet?.walletId]);
-
-  // const [transactions, setTransactions] = useState<Transaction[]>([])
-
-  // useEffect(() => {
-  //   async function loadData() {
-  //     if (!user?.email) return
-
-  //     // Refresh wallet balance
-  //     const { data: wallet } = await getWallet(user.email)
-  //     if (wallet) {
-  //       setUser({ ...user, balance: wallet.balance })
-  //     }
-
-  //     // Load transactions
-  //     const { data: txns } = await getTransactions(user.email)
-  //     if (txns) {
-  //       setTransactions(txns)
-  //     }
-  //     setIsLoadingData(false)
-  //   }
-
-  //   loadData()
-  // }, [user]) // Updated dependency to user
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(amount);
-  };
 
   const getStatementIcon = (operation: Statement["operation"]) => {
     switch (operation) {
@@ -95,7 +65,7 @@ export default function DashboardPage() {
         <CardHeader className="relative">
           <CardDescription>Available Balance</CardDescription>
           <CardTitle className="text-4xl md:text-5xl font-bold tracking-tight">
-             {formatCurrency(wallet?.balance ?? 0)}
+            {formatCurrency(wallet?.balance ?? 0)}
           </CardTitle>
         </CardHeader>
         <CardContent className="relative">
@@ -138,17 +108,7 @@ export default function DashboardPage() {
                     <div>
                       <p className="font-medium text-sm">{statement.literal}</p>
                       <p className="text-xs text-muted-foreground">
-                        {new Date(statement.datetime).toLocaleDateString(
-                          "pt-BR",
-                          {
-                            month: "2-digit",
-                            day: "2-digit",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            second: "2-digit",
-                          },
-                        )}
+                        {formatDateTime(statement.datetime)}
                       </p>
                     </div>
                   </div>
