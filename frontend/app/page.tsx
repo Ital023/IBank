@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -23,8 +23,12 @@ import { InputBlock } from "@/components/shared/input-block";
 import { StateButton } from "@/components/shared/state-button";
 import { toast } from "sonner";
 import axios from "axios";
+import { AuthContext } from "@/context/auth-context";
+import { useWallet } from "@/hooks/use-wallet";
 
 export default function HomePage() {
+  const { wallet, setWallet } = useWallet();
+
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -46,12 +50,18 @@ export default function HomePage() {
   async function getWallet({ email }: EmailWalletSchema) {
     try {
       setIsLoading(true);
-      await findWalletByEmail(email);
+      console.log("Antes do set wallet: " + wallet);
+      setWallet({
+        walletId: "teste",
+        cpf: "34234242342",
+        name: "davi",
+        balance: 0.0,
+        email: "davi@gmail.com",
+      });
+      console.log("Depois do set wallet: " + wallet);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.warning(
-          error.response?.data?.title ?? "Carteira não encontrada",
-        );
+        toast.warning(error.response?.data?.title ?? "Carteira não encontrada");
       } else {
         toast.warning("Erro inesperado");
       }
