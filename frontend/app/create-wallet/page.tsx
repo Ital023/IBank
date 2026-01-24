@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { StateButton } from "@/components/shared/state-button";
 import axios from "axios";
 import { toast } from "sonner";
+import { createWallet } from "@/service/wallet-service";
 
 export default function CreateWalletPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -57,10 +58,20 @@ export default function CreateWalletPage() {
     resolver: zodResolver(createWalletSchema),
   });
 
-  function handleCreateWallet({ cpf, email, name }: CreateWalletSchema) {
+  async function handleCreateWallet({ cpf, email, name }: CreateWalletSchema) {
     try {
       setIsLoading(true);
-      console.log(`${cpf} ${email} ${name}`);
+      console.log("teste");
+      
+
+      const sucess = await createWallet(cpf, email, name);
+
+      if (!sucess) {
+        toast.warning("Não foi possivel criar a carteira");
+        return;
+      }
+      toast.success("Carteira criada! Por favor entre com seu e-mail!");
+      router.push("/")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.warning(error.response?.data?.title ?? "Carteira não encontrada");
