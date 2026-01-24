@@ -1,11 +1,7 @@
 "use client";
 
-import React, { useContext } from "react";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -13,23 +9,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Landmark, ArrowRight, Shield, Zap, CreditCard } from "lucide-react";
+import { Shield, Zap, CreditCard } from "lucide-react";
 import Image from "next/image";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { findWalletByEmail } from "@/functions/get-wallet";
+import { findWalletByEmail } from "@/functions/find-wallet-by-email";
 import { InputBlock } from "@/components/shared/input-block";
 import { StateButton } from "@/components/shared/state-button";
 import { toast } from "sonner";
 import axios from "axios";
-import { AuthContext } from "@/context/auth-context";
 import { useWallet } from "@/hooks/use-wallet";
 
 export default function HomePage() {
   const { wallet, setWallet } = useWallet();
 
   const router = useRouter();
+
+  if(wallet) {
+    router.push("/dashboard");
+  }
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -50,15 +49,8 @@ export default function HomePage() {
   async function getWallet({ email }: EmailWalletSchema) {
     try {
       setIsLoading(true);
-      console.log("Antes do set wallet: " + wallet);
-      setWallet({
-        walletId: "teste",
-        cpf: "34234242342",
-        name: "davi",
-        balance: 0.0,
-        email: "davi@gmail.com",
-      });
-      console.log("Depois do set wallet: " + wallet);
+      const response = await findWalletByEmail(email);
+      setWallet(response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.warning(error.response?.data?.title ?? "Carteira não encontrada");
