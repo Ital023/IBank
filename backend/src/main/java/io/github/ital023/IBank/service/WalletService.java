@@ -123,7 +123,7 @@ public class WalletService {
         return new StatementItemDto(
                 view.getStatementId(),
                 view.getType(),
-                "money received from" + view.getWalletSender(),
+                "money received from " + view.getWalletSender(),
                 view.getStatementValue(),
                 view.getStatementDateTime(),
                 StatementOperation.CREDIT
@@ -134,7 +134,7 @@ public class WalletService {
         return new StatementItemDto(
                 view.getStatementId(),
                 view.getType(),
-                "money sent to" + view.getWalletReceiver(),
+                "money sent to " + view.getWalletReceiver(),
                 view.getStatementValue(),
                 view.getStatementDateTime(),
                 StatementOperation.DEBIT
