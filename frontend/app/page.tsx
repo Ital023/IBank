@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -26,9 +26,18 @@ export default function HomePage() {
 
   const router = useRouter();
 
-  if(wallet) {
-    router.push("/dashboard");
-  }
+  useEffect(() => {
+    if (wallet) {
+      router.push("/dashboard");
+    }
+  }, [wallet, router]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("ibank_wallet_user");
+    if (stored && wallet === null) {
+      setWallet(JSON.parse(stored));
+    }
+  }, [setWallet, wallet]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

@@ -18,12 +18,7 @@ export const AuthContext = createContext<AuthContextProps>(
 );
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [wallet, setWalletState] = useState<Wallet | null>(() => {
-    if (typeof window === "undefined") return null;
-
-    const walletStored = localStorage.getItem("ibank_wallet_user");
-    return walletStored ? JSON.parse(walletStored) : null;
-  });
+  const [wallet, setWalletState] = useState<Wallet | null>(null);
 
   const setWallet = (wallet: Wallet | null) => {
     setWalletState(wallet);
