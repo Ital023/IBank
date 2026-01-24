@@ -20,9 +20,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { findWalletByEmail } from "@/functions/get-wallet";
 import { InputBlock } from "@/components/shared/input-block";
+import { StateButton } from "@/components/shared/state-button";
+import { toast } from "sonner";
+import axios from "axios";
 
 export default function HomePage() {
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const emailWalletSchema = z.object({
     email: z.email("Email Inválido!"),
@@ -38,8 +43,22 @@ export default function HomePage() {
     resolver: zodResolver(emailWalletSchema),
   });
 
-  function getWallet({ email }: EmailWalletSchema) {
-    findWalletByEmail(email);
+  async function getWallet({ email }: EmailWalletSchema) {
+    try {
+      setIsLoading(true);
+      await findWalletByEmail(email);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error);
+        toast.warning(
+          error.response?.data?.title ?? "Carteira não encontrada",
+        );
+      } else {
+        toast.warning("Erro inesperado");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -104,12 +123,13 @@ export default function HomePage() {
                       errorMessage={errors.email?.message}
                     />
                   </div>
-                  <Button
+                  <StateButton
                     type="submit"
                     className="w-full h-12 text-base font-medium"
+                    isLoading={isLoading}
                   >
                     Acessar Conta
-                  </Button>
+                  </StateButton>
                 </form>
 
                 <div className="mt-6 pt-6 border-t border-border/50">
