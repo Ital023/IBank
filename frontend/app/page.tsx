@@ -14,7 +14,7 @@ import Image from "next/image";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { findWalletByEmail } from "@/functions/find-wallet-by-email";
+import { findWalletByEmail } from "@/service/wallet-service";
 import { InputBlock } from "@/components/shared/input-block";
 import { StateButton } from "@/components/shared/state-button";
 import { toast } from "sonner";
