@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useWallet } from "@/hooks/use-wallet";
 import Link from "next/link";
+import Logo from "@/components/shared/logo";
 
 export default function HomePage() {
   const { wallet, setWallet } = useWallet();
@@ -77,15 +78,7 @@ export default function HomePage() {
       <section className="flex-1 flex items-center justify-center px-4 py-12 md:py-20">
         <div className="w-full max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <div className="relative w-60 h-20">
-              <Image
-                src="/logo.png"
-                alt="logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+            <Logo className="w-60 h-20"/>
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
                 Banco sem

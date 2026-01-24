@@ -29,6 +29,7 @@ import { StateButton } from "@/components/shared/state-button";
 import axios from "axios";
 import { toast } from "sonner";
 import { createWallet } from "@/service/wallet-service";
+import Logo from "@/components/shared/logo";
 
 export default function CreateWalletPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -62,7 +63,6 @@ export default function CreateWalletPage() {
     try {
       setIsLoading(true);
       console.log("teste");
-      
 
       const sucess = await createWallet(cpf, email, name);
 
@@ -71,7 +71,7 @@ export default function CreateWalletPage() {
         return;
       }
       toast.success("Carteira criada! Por favor entre com seu e-mail!");
-      router.push("/")
+      router.push("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.warning(error.response?.data?.title ?? "Carteira não encontrada");
@@ -94,12 +94,7 @@ export default function CreateWalletPage() {
       <header className="border-b border-border/50 px-4 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-              <Landmark className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="text-lg font-semibold tracking-tight">
-              QuickBank
-            </span>
+            <Logo className="w-35 h-10" />
           </Link>
           <Button variant="ghost" size="sm" asChild>
             <Link href="/">
@@ -133,50 +128,53 @@ export default function CreateWalletPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             {!isSuccess && (
-                <form
-                  onSubmit={handleSubmit(handleCreateWallet)}
-                  className="space-y-4"
+              <form
+                onSubmit={handleSubmit(handleCreateWallet)}
+                className="space-y-4"
+              >
+                <div>
+                  <InputBlock
+                    register={register}
+                    name="cpf"
+                    label="CPF"
+                    onChange={(e) => {
+                      e.target.value = formatCPF(e.target.value);
+                    }}
+                    placeholder="Digite seu CPF"
+                    className="h-12 bg-input/50 border-border/50 placeholder:text-muted-foreground/50"
+                    errorMessage={errors.cpf?.message}
+                  />
+                </div>
+
+                <div>
+                  <InputBlock
+                    register={register}
+                    name="name"
+                    label="Nome"
+                    placeholder="Digite seu Nome"
+                    className="h-12 bg-input/50 border-border/50 placeholder:text-muted-foreground/50"
+                    errorMessage={errors.name?.message}
+                  />
+                </div>
+
+                <div>
+                  <InputBlock
+                    register={register}
+                    type="email"
+                    name="email"
+                    label="Email"
+                    placeholder="Digite seu Email"
+                    className="h-12 bg-input/50 border-border/50 placeholder:text-muted-foreground/50"
+                    errorMessage={errors.email?.message}
+                  />
+                </div>
+                <StateButton
+                  className="w-full h-12 text-base font-medium"
+                  isLoading={isLoading}
                 >
-                  <div>
-                    <InputBlock
-                      register={register}
-                      name="cpf"
-                      label="CPF"
-                      onChange={(e) => {
-                        e.target.value = formatCPF(e.target.value);
-                      }}
-                      placeholder="Digite seu CPF"
-                      className="h-12 bg-input/50 border-border/50 placeholder:text-muted-foreground/50"
-                      errorMessage={errors.cpf?.message}
-                    />
-                  </div>
-
-                  <div>
-                    <InputBlock
-                      register={register}
-                      name="name"
-                      label="Nome"
-                      placeholder="Digite seu Nome"
-                      className="h-12 bg-input/50 border-border/50 placeholder:text-muted-foreground/50"
-                      errorMessage={errors.name?.message}
-                    />
-                  </div>
-
-                  <div>
-                    <InputBlock
-                      register={register}
-                      type="email"
-                      name="email"
-                      label="Email"
-                      placeholder="Digite seu Email"
-                      className="h-12 bg-input/50 border-border/50 placeholder:text-muted-foreground/50"
-                      errorMessage={errors.email?.message}
-                    />
-                  </div>
-                  <StateButton className="w-full h-12 text-base font-medium" isLoading={isLoading}>
-                    Criar Carteira
-                  </StateButton>
-                </form>
+                  Criar Carteira
+                </StateButton>
+              </form>
             )}
 
             {isSuccess && (

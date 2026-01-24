@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWallet } from "@/hooks/use-wallet";
+import Logo from "./logo";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -49,12 +50,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       <header className="border-b border-border/50 px-4 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-              <Landmark className="w-4 h-4 text-primary-foreground" />
-            </div>
-            <span className="text-lg font-semibold tracking-tight">
-              QuickBank
-            </span>
+            <Logo className="w-35 h-10" />
           </Link>
 
           <div className="flex items-center gap-4">
