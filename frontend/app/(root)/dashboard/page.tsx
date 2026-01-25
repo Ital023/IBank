@@ -61,7 +61,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <Card className="border-border/50 bg-card/80 backdrop-blur-sm overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent pointer-events-none" />
         <CardHeader className="relative">
           <CardDescription>Available Balance</CardDescription>
           <CardTitle className="text-4xl md:text-5xl font-bold tracking-tight">

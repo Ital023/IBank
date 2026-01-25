@@ -7,12 +7,11 @@ interface StateButton {
   className: string;
   children: ReactNode;
   isLoading: boolean;
-  type?: "button" | "submit" | "reset";
 }
 
-export function StateButton({ className, children, isLoading,  type = "button" }: StateButton) {
+export function StateButton({ className, children, isLoading }: StateButton) {
   return (
-    <Button type={type} size={"lg"} className={cn("w-full", className)}>
+    <Button size={"lg"} className={cn("w-full", className)}>
       {isLoading ? (
         <>
           <Spinner /> Carregando

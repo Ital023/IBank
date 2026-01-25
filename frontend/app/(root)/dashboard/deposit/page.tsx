@@ -28,6 +28,7 @@ import { InputBlock } from "@/components/shared/input-block";
 import { StateButton } from "@/components/shared/state-button";
 import axios from "axios";
 import { toast } from "sonner";
+import { depositWallet } from "@/service/wallet-service";
 
 const quickAmounts = [50, 100, 200, 500, 1000];
 
@@ -57,11 +58,27 @@ export default function DepositPage() {
 
   const depositValue = watch("depositValue");
 
-  function handleDeposit({ depositValue }: DepositSchema) {
+  async function handleDeposit({ depositValue }: DepositSchema) {
     try {
       setIsLoading(true);
-      console.log(wallet?.walletId);
-      console.log(depositValue);
+
+      if (!wallet?.walletId) {
+        toast.warning("Carteira não encontrada");
+        return;
+      }
+      const response = await depositWallet(depositValue, wallet.walletId);
+
+      if (!response) {
+        toast.warning("Deposito não foi realizado!");
+      }
+
+      setIsSuccess(true);
+      toast.success("Deposito realizado com sucesso!");
+
+      setTimeout(()=>{
+        setIsSuccess(false);
+        router.push("/");
+      },(1500))
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.warning(error.response?.data?.title ?? "Carteira não encontrada");

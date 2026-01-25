@@ -83,12 +83,6 @@ export default function CreateWalletPage() {
     }
   }
 
-  // useEffect(() => {
-  //   if (!wallet) {
-  //     router.push("/")
-  //   }
-  // }, [user, isLoading, router])
-
   return (
     <main className="min-h-screen flex flex-col">
       <header className="border-b border-border/50 px-4 py-4">
