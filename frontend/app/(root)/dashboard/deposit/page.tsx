@@ -72,6 +72,9 @@ export default function DepositPage() {
         toast.warning("Deposito não foi realizado!");
       }
 
+      wallet.balance += depositValue;
+      setWallet(wallet);
+       
       setIsSuccess(true);
       toast.success("Deposito realizado com sucesso!");
 
