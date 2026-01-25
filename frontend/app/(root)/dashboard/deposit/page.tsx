@@ -120,7 +120,6 @@ export default function DepositPage() {
             <form onSubmit={handleSubmit(handleDeposit)} className="space-y-6">
               <div className="space-y-2">
                 <div className="relative">
-                  <DollarSign className="absolute left-3 top-12  w-5 h-5 text-muted-foreground" />
                   <InputBlock
                     type="number"
                     placeholder="0.00"
@@ -131,6 +130,7 @@ export default function DepositPage() {
                     name="depositValue"
                     label="Quantia"
                     errorMessage={errors.depositValue?.message}
+                    icon={<DollarSign />}
                   />
                 </div>
                 {error && <p className="text-sm text-destructive">{error}</p>}
