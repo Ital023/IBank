@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { InputBlock } from "@/components/shared/input-block";
 import { StateButton } from "@/components/shared/state-button";
 import { useCurrency } from "@/hooks/use-currency";
+import { transferMoneyByEmail } from "@/service/wallet-service";
 
 export default function TransferPage() {
   const { formatCurrency } = useCurrency();
@@ -58,13 +59,16 @@ export default function TransferPage() {
   const transferValue = watch("value");
   const recipientEmail = watch("receiver");
 
-  function handleTransfer({ value, receiver }: TransferSchema) {
+  async function handleTransfer({ value, receiver }: TransferSchema) {
     setIsTransferring(true);
     setError("");
     try {
-      console.log(
-        `sender: ${wallet?.email} | value: ${value} | receiver: ${receiver}`,
-      );
+      if (!wallet?.email) {
+        throw new Error("Wallet email not found");
+      }
+      await transferMoneyByEmail(wallet.email, value, receiver);
+      wallet.balance -= value;
+      setWallet(wallet);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setIsSuccess(false);
@@ -72,7 +76,7 @@ export default function TransferPage() {
       } else {
         toast.warning("Erro inesperado");
       }
-
+    } finally {
       setIsSuccess(true);
       setTimeout(() => {
         router.push("/dashboard");
@@ -166,8 +170,7 @@ export default function TransferPage() {
                 isLoading={isLoading}
               >
                 <ArrowRightLeft className="w-4 h-4 mr-2" />
-                Transferir{" "}
-                {transferValue ? formatCurrency(transferValue) : ""}
+                Transferir {transferValue ? formatCurrency(transferValue) : ""}
               </StateButton>
             </form>
           ) : (

@@ -42,3 +42,7 @@ export async function depositWallet(depositValue: number, walletId: string,): Pr
     return false;
   }
 }
+
+export async function transferMoneyByEmail(sender: string, value: number, receiver: string) {
+  await api.post("/transfers/byEmail", {sender, value, receiver});
+}
