@@ -34,14 +34,12 @@ const quickAmounts = [50, 100, 200, 500, 1000];
 export default function DepositPage() {
   const { formatCurrency } = useCurrency();
   const { wallet, setWallet } = useWallet();
-  const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
   const depositSchema = z.object({
-    walletId: z.string(),
     depositValue: z.number(),
   });
 
@@ -50,17 +48,20 @@ export default function DepositPage() {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<DepositSchema>({
     resolver: zodResolver(depositSchema),
   });
 
+  const depositValue = watch("depositValue");
 
-  function handleDeposit({depositValue}: DepositSchema) {
+  function handleDeposit({ depositValue }: DepositSchema) {
     try {
       setIsLoading(true);
+      console.log(wallet?.walletId);
       console.log(depositValue);
-      
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.warning(error.response?.data?.title ?? "Carteira não encontrada");
@@ -72,7 +73,6 @@ export default function DepositPage() {
     }
   }
 
-  
   return (
     <div className="max-w-md mx-auto">
       <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
@@ -90,7 +90,7 @@ export default function DepositPage() {
             </CardTitle>
             <CardDescription>
               {isSuccess
-                ? `${formatCurrency(parseFloat(amount))} foi adicionado para sua carteira!`
+                ? `${formatCurrency(depositValue)} foi adicionado para sua carteira!`
                 : "Adicione dinheiro a sua carteira imediatamente"}
             </CardDescription>
           </div>
@@ -126,10 +126,15 @@ export default function DepositPage() {
                       key={quickAmount}
                       type="button"
                       variant={
-                        amount === String(quickAmount) ? "default" : "secondary"
+                        depositValue === quickAmount ? "default" : "secondary"
                       }
                       size="sm"
-                      onClick={() => setAmount(String(quickAmount))}
+                      onClick={() =>
+                        setValue("depositValue", quickAmount, {
+                          shouldValidate: true,
+                          shouldDirty: true,
+                        })
+                      }
                       className="text-xs"
                     >
                       R${quickAmount}
@@ -145,22 +150,21 @@ export default function DepositPage() {
                 <p className="text-lg font-semibold">
                   {formatCurrency(wallet?.balance ?? 0)}
                 </p>
-                {amount && parseFloat(amount) > 0 && (
+                {depositValue > 0 && (
                   <p className="text-sm text-primary">
                     Depois do depósito:{" "}
-                    {formatCurrency(
-                      (wallet?.balance ?? 0) + parseFloat(amount),
-                    )}
+                    {formatCurrency((wallet?.balance ?? 0) + depositValue)}
                   </p>
                 )}
               </div>
 
               <StateButton
+                type="submit"
                 className="w-full h-12 text-base font-medium"
                 isLoading={isLoading}
               >
                 <ArrowDownToLine className="w-4 h-4 mr-2" />
-                Depositar {amount ? formatCurrency(parseFloat(amount)) : ""}
+                Depositar {depositValue ? formatCurrency(depositValue) : ""}
               </StateButton>
             </form>
           ) : (

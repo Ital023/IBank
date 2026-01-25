@@ -4,7 +4,9 @@ import { InputHTMLAttributes, ReactNode } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 
-interface InputBlockProps<T extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
+interface InputBlockProps<
+  T extends FieldValues,
+> extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   placeholder?: string;
   errorMessage?: string;
@@ -24,12 +26,15 @@ export function InputBlock<T extends FieldValues>({
 }: InputBlockProps<T>) {
   return (
     <div className="flex flex-col">
-     
-      <Label className="mb-4">{icon} {label}</Label>
+      <Label className="mb-4">
+        {icon} {label}
+      </Label>
       <Input
         className="mb-2"
         placeholder={placeholder ?? ""}
-        {...register(name)}
+        {...register(name, {
+          valueAsNumber: rest.type === "number",
+        })}
         {...rest}
       />
       <InputErrorMessage errorMessage={errorMessage ?? ""} />
