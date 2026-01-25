@@ -74,7 +74,7 @@ export default function DepositPage() {
 
       wallet.balance += depositValue;
       setWallet(wallet);
-       
+
       setIsSuccess(true);
       toast.success("Deposito realizado com sucesso!");
 
@@ -179,7 +179,6 @@ export default function DepositPage() {
               </div>
 
               <StateButton
-                type="submit"
                 className="w-full h-12 text-base font-medium"
                 isLoading={isLoading}
               >
