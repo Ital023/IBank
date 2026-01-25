@@ -53,6 +53,8 @@ public class WalletController {
         return ResponseEntity.ok(statement);
     }
 
+
+    // Endpoints especificamente para o front end
     @GetMapping
     public ResponseEntity<WalletDto> findById(@RequestParam(name = "email") FindByIdWalletDto dto) {
         WalletDto wallet = walletService.findById(dto);

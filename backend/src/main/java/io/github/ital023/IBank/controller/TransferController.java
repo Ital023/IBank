@@ -1,5 +1,6 @@
 package io.github.ital023.IBank.controller;
 
+import io.github.ital023.IBank.controller.dto.TransferMoneyByEmailDto;
 import io.github.ital023.IBank.controller.dto.TransferMoneyDto;
 import io.github.ital023.IBank.service.TransferService;
 import jakarta.validation.Valid;
@@ -22,6 +23,13 @@ public class TransferController {
     @PostMapping
     public ResponseEntity<Void> transfer(@RequestBody @Valid TransferMoneyDto dto) {
         transferService.transferMoney(dto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/byEmail")
+    public ResponseEntity<Void> transferByEmail(@RequestBody @Valid TransferMoneyByEmailDto dto) {
+        transferService.transferMoneyByEmail(dto);
 
         return ResponseEntity.ok().build();
     }
