@@ -64,7 +64,7 @@ export default function DashboardPage() {
       <Card className="border-border/50 bg-card/80 backdrop-blur-sm overflow-hidden">
         <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent pointer-events-none" />
         <CardHeader className="relative">
-          <CardDescription>Available Balance</CardDescription>
+          <CardDescription>Saldo disponível</CardDescription>
           <CardTitle className="text-4xl md:text-5xl font-bold tracking-tight">
             {formatCurrency(wallet?.balance ?? 0)}
           </CardTitle>
@@ -72,16 +72,16 @@ export default function DashboardPage() {
         <CardContent className="relative">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Wallet className="w-4 h-4 text-primary" />
-            <span>Wallet ID: {wallet?.walletId || "Not set"}</span>
+            <span>ID da carteira: {wallet?.walletId || "Not set"}</span>
           </div>
         </CardContent>
       </Card>
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Recent Transactions</h2>
+          <h2 className="text-xl font-semibold">Transações recentes</h2>
           <span className="text-sm text-muted-foreground">
-            {statements.length} transactions
+            {statements.length} Transações
           </span>
         </div>
 
