@@ -22,15 +22,15 @@ interface DashboardLayoutProps {
 }
 
 const navItems = [
-  { href: "/dashboard", label: "Statements", icon: LayoutDashboard },
-  { href: "/dashboard/deposit", label: "Deposit", icon: ArrowDownToLine },
-  { href: "/dashboard/transfer", label: "Transfer", icon: ArrowRightLeft },
+  { href: "/dashboard", label: "Extrato", icon: LayoutDashboard },
+  { href: "/dashboard/deposit", label: "Depósito", icon: ArrowDownToLine },
+  { href: "/dashboard/transfer", label: "Transferência", icon: ArrowRightLeft },
 ];
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const {wallet, setWallet, logout} = useWallet();
+  const { wallet, setWallet, logout } = useWallet();
 
   useEffect(() => {
     if (!wallet) {
@@ -64,7 +64,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               className="text-muted-foreground hover:text-foreground"
             >
               <LogOut className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Logout</span>
+              <span className="hidden sm:inline">Sair</span>
             </Button>
           </div>
         </div>
